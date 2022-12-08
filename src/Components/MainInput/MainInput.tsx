@@ -1,9 +1,11 @@
-import React, {DetailedHTMLProps, FC, InputHTMLAttributes} from "react"
+import React, {FC} from "react"
+import {OutlinedTextFieldProps, TextField} from "@mui/material"
 
-type IMainInput = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+type IMainInput = OutlinedTextFieldProps
 
 const MainInput: FC<IMainInput> = ({...props}) =>
-	<input {...props}/>
+	<TextField {...props}/>
 
+export {MainInput}
 
 
