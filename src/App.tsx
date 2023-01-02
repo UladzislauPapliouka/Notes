@@ -1,15 +1,13 @@
 import React from "react"
 import "./App.css"
 import {MainInput} from "./Components/MainInput/MainInput"
-import {Note} from "./Components/Note/Note"
+import {NoteContainer} from "./Components/NoteContainer/NoteContainer"
 
 function App() {
 	return (
 		<div className="App">
 			<MainInput variant={"outlined"}/>
-			<Note
-				noteTitle={"Note title example"}
-				noteBody={"Note text example"}/>
+			<NoteContainer notes={[]}/>
 		</div>
 	)
 }

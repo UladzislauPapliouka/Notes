@@ -1,11 +1,10 @@
 import React, {ChangeEvent, FC, useState} from "react"
 import {FormControl, IconButton, InputAdornment, OutlinedInput, OutlinedTextFieldProps} from "@mui/material"
-import MainInputStyle from "./MainInput.module.scss"
 import AddIcon from "@mui/icons-material/Add"
 
 type IMainInput = OutlinedTextFieldProps
 
-const MainInput: FC<IMainInput> = ({...props}) => {
+const MainInput: FC<IMainInput> = () => {
 	const [noteTitle, setNoteTitle] = useState<string>("")
 	const onAddClickHandler = () => {
 		//TODO: Add usage of callback to add new note

@@ -1,12 +1,7 @@
 import React, {FC} from "react"
 import {Divider, Paper, Typography} from "@mui/material"
 import NoteStyle from "./Note.module.scss"
-
-interface INote {
-	noteTitle: string
-	noteBody: string
-	//noteTags: INoteTags
-}
+import {INote} from "../../types"
 
 export const Note: FC<INote> = ({
 	noteTitle,
@@ -18,6 +13,7 @@ export const Note: FC<INote> = ({
 			<Divider/>
 			<Typography variant={"body1"} className={NoteStyle.noteBody}>{noteBody}</Typography>
 			{/*<Divider/>  Activate  note tags will be implemented*/}
+			{/*TODO: Add button group to edit/delete note	*/}
 		</Paper>
 	)
 }
