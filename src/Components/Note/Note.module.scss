@@ -1,0 +1,26 @@
+.notePaper {
+  width: 250px;
+  box-sizing: border-box;
+  padding: 6px;
+  overflow: hidden;
+
+  .noteTitle {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  & > hr {
+    margin: 6px;
+  }
+
+  .noteBody {
+    text-align: left;
+    overflow: hidden;
+    display: -webkit-box;
+    word-break: break-all;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+    line-height: 1.4rem;
+  }
+}
