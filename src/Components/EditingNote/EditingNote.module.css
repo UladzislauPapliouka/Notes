@@ -1,0 +1,25 @@
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.background .paper {
+  width: 50vw;
+  height: 50vh;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  gap: 10px;
+}
+.background .paper .buttons {
+  justify-content: flex-end;
+}
+
+/*# sourceMappingURL=EditingNote.module.css.map */

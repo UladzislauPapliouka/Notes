@@ -19,8 +19,13 @@ export const notesSlice = createSlice({
 		deleteNote: (state, action: PayloadAction<string>) => {
 			return state.filter(note => note.noteId !== action.payload)
 		},
+		editNote: (state, action: PayloadAction<{ noteId: string, newTitle: string, newBody: string }>) => {
+			const editingNote = state.find(note => note.noteId === action.payload.noteId) as INote
+			editingNote.noteTitle = action.payload.newTitle ? action.payload.newTitle : editingNote.noteTitle
+			editingNote.noteBody = action.payload.newBody ? action.payload.newBody : editingNote.noteBody
+		},
 	}
 })
 
-export const {addNote, deleteNote} = notesSlice.actions
+export const {addNote, deleteNote, editNote} = notesSlice.actions
 export default notesSlice.reducer
