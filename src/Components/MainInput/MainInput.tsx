@@ -1,14 +1,16 @@
 import React, {ChangeEvent, FC, useState} from "react"
 import {FormControl, IconButton, InputAdornment, OutlinedInput, OutlinedTextFieldProps} from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
+import {useDispatch} from "react-redux"
+import {addNote} from "../../Store/Reducers/NotesReducer"
 
 type IMainInput = OutlinedTextFieldProps
 
 const MainInput: FC<IMainInput> = () => {
 	const [noteTitle, setNoteTitle] = useState<string>("")
+	const dispatch = useDispatch()
 	const onAddClickHandler = () => {
-		//TODO: Add usage of callback to add new note
-		console.log(noteTitle)
+		dispatch(addNote(noteTitle))
 		setNoteTitle("")
 	}
 	const onChangeInputHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setNoteTitle(event.target.value)
