@@ -15,7 +15,8 @@ export const NoteContainer: FC<INoteContainer> = ({
 			{notes.map(note => <Note noteId={note.noteId}
 									 key={note.noteId}
 									 noteTitle={note.noteTitle}
-									 noteBody={note.noteBody}/>)}
+									 noteBody={note.noteBody}
+									 noteTags={note.noteTags}/>)}
 		</div>
 	)
 }

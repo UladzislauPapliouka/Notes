@@ -1,8 +1,14 @@
 interface INote {
-	noteId:string
+	noteId: string
 	noteTitle: string
 	noteBody: string
-	//noteTags: INoteTags
+	noteTags: INoteTags[]
 }
 
-export type {INote}
+interface INoteTags {
+	tagLabel: string
+	tagColor: string
+	textColor: string
+}
+
+export type {INote, INoteTags}

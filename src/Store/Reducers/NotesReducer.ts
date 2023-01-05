@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit"
 import {v1} from "uuid"
-import {INote} from "../../types"
+import {INote, INoteTags} from "../../types"
+import chroma from "chroma-js"
 
 const initialState: Array<INote> = []
 
@@ -12,7 +13,8 @@ export const notesSlice = createSlice({
 			const newNote: INote = {
 				noteId: v1(),
 				noteBody: action.payload,
-				noteTitle: action.payload.split(" ")[0]
+				noteTitle: action.payload.split(" ")[0],
+				noteTags: []
 			}
 			state.push(newNote)
 		},
@@ -24,8 +26,18 @@ export const notesSlice = createSlice({
 			editingNote.noteTitle = action.payload.newTitle ? action.payload.newTitle : editingNote.noteTitle
 			editingNote.noteBody = action.payload.newBody ? action.payload.newBody : editingNote.noteBody
 		},
+		addTagToNote: (state, action: PayloadAction<{ noteId: string, tagLabel: string }>) => {
+			const tagColor = chroma.random()
+			const newTag: INoteTags = {
+				tagLabel: action.payload.tagLabel,
+				tagColor: tagColor.hex("rgb"),
+				textColor: tagColor.luminance() >= 0.5 ? "black" : "white"
+			}
+			const workingNote = state.find(note => note.noteId === action.payload.noteId) as INote
+			workingNote.noteTags.push(newTag)
+		}
 	}
 })
 
-export const {addNote, deleteNote, editNote} = notesSlice.actions
+export const {addNote, deleteNote, editNote, addTagToNote} = notesSlice.actions
 export default notesSlice.reducer

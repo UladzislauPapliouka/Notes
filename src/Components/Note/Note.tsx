@@ -7,11 +7,14 @@ import {useDispatch} from "react-redux"
 import {deleteNote} from "../../Store/Reducers/NotesReducer"
 import {Edit} from "@mui/icons-material"
 import {EditingNote} from "../EditingNote/EditingNote"
+import {Tag} from "../Tag/Tag"
+import {TagContainer} from "../TagContainer/TagContainer"
 
 export const Note: FC<INote> = ({
 	noteTitle,
 	noteBody,
-	noteId
+	noteId,
+	noteTags
 }) => {
 	const dispatch = useDispatch()
 	const onDeleteClickHandler = () => dispatch(deleteNote(noteId))
@@ -22,11 +25,22 @@ export const Note: FC<INote> = ({
 			<Divider/>
 			<Typography variant={"body1"} className={NoteStyle.noteBody}>{noteBody}</Typography>
 			{/*TODO:  Activate when note tags will be implemented*/}
+			{noteTags.length ?
+				<>
+					<Divider/>
+					<TagContainer>
+						{noteTags.map(tag => (<Tag key={tag.tagLabel} onDeleteHandler={(tagLabel: string) => {
+							return
+						}} tagLabel={tag.tagLabel} tagColor={tag.tagColor} textColor={tag.textColor}/>))}
+					</TagContainer>
+					<Divider/>
+				</> :
+				""}
 			<ButtonGroup variant={"contained"}>
 				<Button onClick={onDeleteClickHandler} color={"error"} endIcon={<DeleteIcon/>}>Delete</Button>
 				<Button onClick={() => setIsEditing(true)} endIcon={<Edit/>}>Edit</Button>
 			</ButtonGroup>
-			{isEditing && <EditingNote closeEditing={() => {
+			{isEditing && <EditingNote noteTags={noteTags} closeEditing={() => {
 				setIsEditing(false)
 			}} noteId={noteId} noteTitle={noteTitle} noteBody={noteBody}/>}
 		</Paper>
