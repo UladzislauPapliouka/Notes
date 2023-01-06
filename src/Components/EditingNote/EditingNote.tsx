@@ -4,7 +4,7 @@ import EditingNoteStyle from "./EditingNote.module.scss"
 import {Button, ButtonGroup, IconButton, InputAdornment, OutlinedInput, Paper, TextField} from "@mui/material"
 import {Check, Close} from "@mui/icons-material"
 import {useDispatch} from "react-redux"
-import {addTagToNote, editNote} from "../../Store/Reducers/NotesReducer"
+import {addTagToNote, deleteTagFromNote, editNote} from "../../Store/Reducers/NotesReducer"
 import {Tag} from "../Tag/Tag"
 import {TagContainer} from "../TagContainer/TagContainer"
 import AddIcon from "@mui/icons-material/Add"
@@ -38,7 +38,10 @@ export const EditingNote: FC<IEditingNote> = ({
 		closeEditing()
 	}
 	const onAddTagHandler = () => {
-		dispatch(addTagToNote({noteId, tagLabel:addingTag}))
+		dispatch(addTagToNote({noteId, tagLabel: addingTag}))
+	}
+	const onDeleteTagHandler = (tagLabel: string) => {
+		dispatch(deleteTagFromNote({noteId, tagLabel}))
 	}
 	return (
 		<div onMouseDown={closeEditing} className={EditingNoteStyle.background}>
@@ -67,9 +70,9 @@ export const EditingNote: FC<IEditingNote> = ({
 					}
 				/>
 				<TagContainer>
-					{noteTags.map(tag => (<Tag key={tag.tagLabel} onDeleteHandler={(tagLabel: string) => {
-						return
-					}} tagLabel={tag.tagLabel} tagColor={tag.tagColor} textColor={tag.textColor}/>))}
+					{noteTags.map(tag => (
+						<Tag key={tag.tagLabel} onDeleteHandler={onDeleteTagHandler} tagLabel={tag.tagLabel}
+							 tagColor={tag.tagColor} textColor={tag.textColor}/>))}
 				</TagContainer>
 				<ButtonGroup disableElevation className={EditingNoteStyle.buttons} variant={"contained"}>
 					<Button onClick={onSubmitClickHandler} color={"success"} endIcon={<Check/>}>Submit</Button>

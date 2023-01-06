@@ -14,6 +14,6 @@ export const Tag: FC<ITagComponent> = ({
 }) => {
 	return (
 		<Chip size={"small"} label={tagLabel} sx={{background: tagColor, color: textColor}}
-			  onDelete={onDeleteHandler}/>
+			  onDelete={() => onDeleteHandler(tagLabel)}/>
 	)
 }

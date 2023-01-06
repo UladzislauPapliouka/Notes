@@ -35,9 +35,13 @@ export const notesSlice = createSlice({
 			}
 			const workingNote = state.find(note => note.noteId === action.payload.noteId) as INote
 			workingNote.noteTags.push(newTag)
+		},
+		deleteTagFromNote: (state, action: PayloadAction<{ noteId: string, tagLabel: string }>) => {
+			const workingNote = state.find(note => note.noteId === action.payload.noteId) as INote
+			workingNote.noteTags = workingNote.noteTags.filter(tag => tag.tagLabel !== action.payload.tagLabel)
 		}
 	}
 })
 
-export const {addNote, deleteNote, editNote, addTagToNote} = notesSlice.actions
+export const {addNote, deleteNote, editNote, addTagToNote, deleteTagFromNote} = notesSlice.actions
 export default notesSlice.reducer
