@@ -4,7 +4,7 @@ import NoteStyle from "./Note.module.scss"
 import DeleteIcon from "@mui/icons-material/Delete"
 import {INote} from "../../types"
 import {useDispatch} from "react-redux"
-import {deleteNote} from "../../Store/Reducers/NotesReducer"
+import {deleteNote, deleteTagFromNote} from "../../Store/Reducers/NotesReducer"
 import {Edit} from "@mui/icons-material"
 import {EditingNote} from "../EditingNote/EditingNote"
 import {Tag} from "../Tag/Tag"
@@ -19,6 +19,9 @@ export const Note: FC<INote> = ({
 	const dispatch = useDispatch()
 	const onDeleteClickHandler = () => dispatch(deleteNote(noteId))
 	const [isEditing, setIsEditing] = useState<boolean>(false)
+	const onDeleteTagFromNote = (tagLabel: string) => {
+		dispatch(deleteTagFromNote({noteId, tagLabel}))
+	}
 	return (
 		<Paper elevation={3} className={NoteStyle.notePaper}>
 			<Typography variant={"h4"} className={NoteStyle.noteTitle}>{noteTitle}</Typography>
@@ -29,9 +32,9 @@ export const Note: FC<INote> = ({
 				<>
 					<Divider/>
 					<TagContainer>
-						{noteTags.map(tag => (<Tag key={tag.tagLabel} onDeleteHandler={(tagLabel: string) => {
-							return
-						}} tagLabel={tag.tagLabel} tagColor={tag.tagColor} textColor={tag.textColor}/>))}
+						{noteTags.map(tag => (
+							<Tag key={tag.tagLabel} onDeleteHandler={onDeleteTagFromNote} tagLabel={tag.tagLabel}
+								 tagColor={tag.tagColor} textColor={tag.textColor}/>))}
 					</TagContainer>
 					<Divider/>
 				</> :
