@@ -16,7 +16,9 @@ const MainInput: FC<IMainInput> = () => {
 	const onChangeInputHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setNoteTitle(event.target.value)
 	const onEnterInputHandler = (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		if (event.code === "Enter") {
-			onAddClickHandler()
+			if(noteTitle.trim()){
+				onAddClickHandler()
+			}
 		}
 	}
 	return (
