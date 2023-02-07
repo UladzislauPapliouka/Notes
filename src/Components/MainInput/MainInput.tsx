@@ -1,5 +1,5 @@
 import React, {ChangeEvent, FC, useState} from "react"
-import {FormControl, IconButton, InputAdornment, OutlinedInput, OutlinedTextFieldProps} from "@mui/material"
+import {FormControl, IconButton, InputAdornment, OutlinedTextFieldProps, TextField} from "@mui/material"
 import AddIcon from "@mui/icons-material/Add"
 import {useDispatch} from "react-redux"
 import {addNote} from "../../Store/Reducers/NotesReducer"
@@ -8,22 +8,28 @@ type IMainInput = OutlinedTextFieldProps
 
 const MainInput: FC<IMainInput> = () => {
 	const [noteTitle, setNoteTitle] = useState<string>("")
+	const [error, setError] = useState<string | null>(null)
 	const dispatch = useDispatch()
 	const onAddClickHandler = () => {
-		dispatch(addNote(noteTitle))
-		setNoteTitle("")
+		if (noteTitle.trim()) {
+			dispatch(addNote(noteTitle))
+			setNoteTitle("")
+		} else {
+			setError("Field must to be filled...")
+		}
 	}
-	const onChangeInputHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setNoteTitle(event.target.value)
-	const onEnterInputHandler = (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+	const onChangeInputHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+		setNoteTitle(event.target.value)
+		setError(null)
+	}
+	const onEnterInputHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
 		if (event.code === "Enter") {
-			if(noteTitle.trim()){
-				onAddClickHandler()
-			}
+			onAddClickHandler()
 		}
 	}
 	return (
 		<FormControl>
-			<OutlinedInput
+			<TextField
 				type={"text"}
 				placeholder={"Note title..."}
 				sx={{
@@ -34,16 +40,21 @@ const MainInput: FC<IMainInput> = () => {
 				onKeyDown={(event) => {
 					onEnterInputHandler(event)
 				}}
-				endAdornment={
-					<InputAdornment position="end">
-						<IconButton
-							onClick={onAddClickHandler}
-							edge="end"
-						>
-							<AddIcon/>
-						</IconButton>
-					</InputAdornment>
-				}
+				error={!!error}
+				helperText={error ? error : ""}
+				InputProps={{
+					endAdornment:
+						<InputAdornment position="end">
+							<IconButton
+								onClick={onAddClickHandler}
+								edge="end"
+							>
+								<AddIcon/>
+							</IconButton>
+						</InputAdornment>
+
+				}}
+
 			/>
 		</FormControl>
 	)
