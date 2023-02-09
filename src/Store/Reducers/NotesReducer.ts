@@ -34,7 +34,11 @@ export const notesSlice = createSlice({
 				textColor: tagColor.luminance() >= 0.5 ? "black" : "white"
 			}
 			const workingNote = state.find(note => note.noteId === action.payload.noteId) as INote
-			workingNote.noteTags.push(newTag)
+			if(workingNote.noteTags.length < 10){
+				workingNote.noteTags.push(newTag)
+			} else {
+				throw new Error("Max count of tags is 10")
+			}
 		},
 		deleteTagFromNote: (state, action: PayloadAction<{ noteId: string, tagLabel: string }>) => {
 			const workingNote = state.find(note => note.noteId === action.payload.noteId) as INote

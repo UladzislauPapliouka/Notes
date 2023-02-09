@@ -24,11 +24,11 @@ export const EditingNote: FC<IEditingNote> = ({
 	const [editingTitle, setEditingTitle] = useState<string>(noteTitle)
 	const [editingBody, setEditingBody] = useState<string>(noteBody)
 	const [addingTag, setAddingTag] = useState<string>("")
-
+	const [addTagsError, setTagsError] = useState<string|null>(null)
 	const onChangeTitleHandler = (newTitle: string) => setEditingTitle(newTitle)
 	const onChangeBodyHandler = (newBody: string) => setEditingBody(newBody)
 	const onChangeTagHandler = (newTag: string) => setAddingTag(newTag)
-	const onEnterInputHandler = (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+	const onEnterInputHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
 		if (event.code === "Enter") {
 			onAddTagHandler()
 		}
@@ -38,7 +38,11 @@ export const EditingNote: FC<IEditingNote> = ({
 		closeEditing()
 	}
 	const onAddTagHandler = () => {
-		dispatch(addTagToNote({noteId, tagLabel: addingTag}))
+		try {
+			dispatch(addTagToNote({noteId, tagLabel: addingTag}))
+		} catch (e:any) {
+			setTagsError(e.message)
+		}
 	}
 	const onDeleteTagHandler = (tagLabel: string) => {
 		dispatch(deleteTagFromNote({noteId, tagLabel}))
@@ -50,16 +54,18 @@ export const EditingNote: FC<IEditingNote> = ({
 				<TextField onChange={(e) => onChangeBodyHandler(e.target.value)} value={editingBody} rows={13}
 						   label={"Note"} multiline maxRows={13}/>
 				{/*TODO add possibility to editing tags*/}
-				<OutlinedInput
+				<TextField
 					type={"text"}
 					placeholder={"New tag..."}
 					value={addingTag}
+					error={!!addTagsError}
+					helperText={addTagsError ? addTagsError : ""}
 					onChange={(event) => onChangeTagHandler(event.target.value)}
 					onKeyDown={(event) => {
 						onEnterInputHandler(event)
 					}}
-					endAdornment={
-						<InputAdornment position="end">
+					InputProps={{
+						endAdornment:<InputAdornment position="end">
 							<IconButton
 								onClick={() => onAddTagHandler()}
 								edge="end"
@@ -67,7 +73,7 @@ export const EditingNote: FC<IEditingNote> = ({
 								<AddIcon/>
 							</IconButton>
 						</InputAdornment>
-					}
+					}}
 				/>
 				<TagContainer>
 					{noteTags.map(tag => (
