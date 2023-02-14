@@ -3,30 +3,44 @@ import {FormControl, IconButton, InputAdornment, OutlinedTextFieldProps, TextFie
 import AddIcon from "@mui/icons-material/Add"
 import {useDispatch} from "react-redux"
 import {addNote} from "../../Store/Reducers/NotesReducer"
+import {titleValidator} from "../../services/validators"
 
-type IMainInput = OutlinedTextFieldProps
-
-const MainInput: FC<IMainInput> = () => {
+const MainInput: FC<OutlinedTextFieldProps> = ({...props}) => {
+	
 	const [noteTitle, setNoteTitle] = useState<string>("")
 	const [error, setError] = useState<string | null>(null)
+	
 	const dispatch = useDispatch()
-	const onAddClickHandler = () => {
-		if (noteTitle.trim()) {
+
+	const addNewNoteHandler = () => {
+		const validationResult = titleValidator(noteTitle)
+		if (validationResult.status) {
 			dispatch(addNote(noteTitle))
 			setNoteTitle("")
 		} else {
-			setError("Field must to be filled...")
+			setError(validationResult.errorMessage)
 		}
 	}
-	const onChangeInputHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+	
+	const onChangeMainInputHandler = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
 		setNoteTitle(event.target.value)
 		setError(null)
 	}
 	const onEnterInputHandler = (event: React.KeyboardEvent<HTMLDivElement>) => {
 		if (event.code === "Enter") {
-			onAddClickHandler()
+			addNewNoteHandler()
 		}
 	}
+
+	const endAdornment = <InputAdornment position="end">
+		<IconButton
+			onClick={addNewNoteHandler}
+			edge="end"
+		>
+			<AddIcon/>
+		</IconButton>
+	</InputAdornment>
+
 	return (
 		<FormControl>
 			<TextField
@@ -36,25 +50,14 @@ const MainInput: FC<IMainInput> = () => {
 					width: "500px"
 				}}
 				value={noteTitle}
-				onChange={(event) => onChangeInputHandler(event)}
-				onKeyDown={(event) => {
-					onEnterInputHandler(event)
-				}}
+				onChange={onChangeMainInputHandler}
+				onKeyDown={onEnterInputHandler}
 				error={!!error}
-				helperText={error ? error : ""}
+				helperText={error ?? error}
 				InputProps={{
-					endAdornment:
-						<InputAdornment position="end">
-							<IconButton
-								onClick={onAddClickHandler}
-								edge="end"
-							>
-								<AddIcon/>
-							</IconButton>
-						</InputAdornment>
-
+					endAdornment: endAdornment
 				}}
-
+				{...props}
 			/>
 		</FormControl>
 	)
